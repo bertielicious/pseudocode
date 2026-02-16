@@ -1,0 +1,46 @@
+✅ Pseudocode — interrupt + debounce timer
+DEFINE button pin
+DEFINE debounce time (e.g. 30 ms)
+
+CREATE debounce timer with callback function
+
+FUNCTION debounce callback:
+    READ button state
+    IF button is pressed:
+        REPORT "valid button press"
+
+FUNCTION button interrupt handler:
+    STOP debounce timer (if running)
+    START debounce timer for debounce time
+
+MAIN PROGRAM:
+    CONFIGURE button pin as input with pull-up
+    ENABLE interrupt on both edges (press and release)
+    REGISTER interrupt handler
+    START system (wait forever)
+
+Behaviour in words 
+
+When button changes state:
+    Interrupt fires
+
+Interrupt:
+    Restart debounce timer
+
+If no more bouncing occurs:
+    Timer expires
+    Check stable button level
+    Confirm press
+
+Even fewer words:
+
+ON button edge:
+    delay until stable
+    read button
+    handle event
+
+Mental model used by embedded engineers
+
+Interrupt = "something changed"
+Timer = "wait for noise to settle"
+Callback = "decide what actually happened"
